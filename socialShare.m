@@ -180,10 +180,15 @@ NSString *successCallback = nil;
     
     NSString *webFbUrlStr =  [NSString stringWithFormat:@"%@%@", @"http://www.facebook.com/sharer.php?u=", webUrl ];
     
-    
-    
-    
-    
+
+    // if it is available to us, we will post using the native dialog
+    BOOL displayedNativeDialog = [FBNativeDialogs presentShareDialogModallyFrom:super.viewController 
+                                                                    initialText:fbText
+                                                                          image:nil
+                                                                            url:[[NSURL alloc] initWithString:webUrl]
+                                                                        handler:nil];
+if (!displayedNativeDialog)
+{
     NSURL *webFbUrl = [NSURL URLWithString:webFbUrlStr ];
     NSURL *theURL = [NSURL URLWithString:fbShareText ];
     
@@ -196,6 +201,9 @@ NSString *successCallback = nil;
         [[UIApplication sharedApplication] openURL:webFbUrl];
     }
     
+}
+    
+   
     CDVPluginResult* pluginResult = nil;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""];
     
